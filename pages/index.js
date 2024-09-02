@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import { Row, Card, Col, Button, Upload, message } from "antd";
-import { StarOutlined, UploadOutlined } from "@ant-design/icons";
-import { FaRegTrashCan, FaDownload, FaUpload } from "react-icons/fa6";
+import { Row, Card, Col, Upload, message, notification, Button } from "antd";
+import { FaUpload } from "react-icons/fa6";
 import { InboxOutlined } from "@ant-design/icons";
 
 const { Dragger } = Upload;
@@ -29,6 +28,20 @@ const uploadProps = {
 };
 
 export default function Home(props) {
+  const [api, contextHolder] = notification.useNotification();
+
+  const openNotification = () => {
+    api.open({
+      stack: 1,
+      message: "Information",
+      description: "Azure uploads all added files",
+      className: "custom-class",
+      style: {
+        width: 600,
+      },
+    });
+  };
+
   return (
     <div className={styles.container}>
       <Head>
@@ -41,7 +54,12 @@ export default function Home(props) {
         <Row justify={"center"}>
           <Col span={16} md={8}>
             <Card
-              actions={[<FaUpload size={50} key="setting" />]}
+              actions={[
+                <div onMouseEnter={openNotification}>
+                  <FaUpload size={50} key="setting" />
+                  {contextHolder}
+                </div>,
+              ]}
               title="Mayasoft - Azure File Integration"
               type="inner"
             >

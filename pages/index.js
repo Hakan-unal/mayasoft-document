@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import { Row, Card, Col, Upload, message, notification, Button } from "antd";
+import { Row, Card, Col, Upload, message, notification, Input,FloatButton,Drawer, } from "antd";
 import { FaUpload } from "react-icons/fa6";
 import { InboxOutlined } from "@ant-design/icons";
+import { CommentOutlined, CustomerServiceOutlined } from '@ant-design/icons';
 
 const { Dragger } = Upload;
+const { TextArea } = Input;
 
 const uploadProps = {
+  style:{padding:30},
   name: "file",
   multiple: true,
-  action: "https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload",
+  action: "api/document",
   onChange(info) {
     const { status } = info.file;
     if (status !== "uploading") {
@@ -29,6 +32,7 @@ const uploadProps = {
 
 export default function Home(props) {
   const [api, contextHolder] = notification.useNotification();
+  const [open, setOpen] = useState(false);
 
   const openNotification = () => {
     api.open({
@@ -41,7 +45,11 @@ export default function Home(props) {
       },
     });
   };
-
+  const handleDrawer = () => {
+    setOpen(!open);
+  };
+  
+  
   return (
     <div className={styles.container}>
       <Head>
@@ -54,13 +62,14 @@ export default function Home(props) {
         <Row justify={"center"}>
           <Col span={16} md={8}>
             <Card
-              actions={[
-                <div onMouseEnter={openNotification}>
-                  <FaUpload size={50} key="setting" />
-                  {contextHolder}
-                </div>,
-              ]}
-              title="Mayasoft - Azure File Integration"
+            style={{textAlign:"center"}}
+              // actions={[
+              //   <div onMouseEnter={openNotification}>
+              //     <FaUpload size={50} key="setting" />
+              //     {contextHolder}
+              //   </div>,
+              // ]}
+              title="Azure File Integration"
               type="inner"
             >
               <Dragger {...uploadProps}>
@@ -78,16 +87,24 @@ export default function Home(props) {
             </Card>
           </Col>
         </Row>
+
+        <FloatButton onClick={()=>handleDrawer()} icon={<CommentOutlined  />} tooltip={<div>Azure Chatbot</div>} />
+        
+
+        <Drawer title="Azure Chatbot" onClose={()=>handleDrawer()} open={open}>
+        <TextArea rows={12} />
+        </Drawer>
+
       </main>
     </div>
   );
 }
 
 export const getStaticProps = async () => {
-  const res = await fetch("https://jsonplaceholder.typicode.com/users");
-  const data = await res.json();
+  // const res = await fetch("https://jsonplaceholder.typicode.com/users");
+  // const data = await res.json();
 
-  return {
-    props: { datas: data },
-  };
+   return {
+     props: { datas: {} },
+   };
 };

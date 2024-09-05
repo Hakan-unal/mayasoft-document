@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import { Row, Card, Col, Upload, message, notification, Input,FloatButton,Drawer, } from "antd";
-import { FaUpload } from "react-icons/fa6";
+import { Row, Card, Col, Upload, message, Input,FloatButton,Drawer } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
-import { CommentOutlined, CustomerServiceOutlined } from '@ant-design/icons';
+import { CommentOutlined } from '@ant-design/icons';
 
 const { Dragger } = Upload;
 const { TextArea } = Input;
 
 const uploadProps = {
+  accept:'.doc,.docx,application/pdf',
   style:{padding:30},
   name: "file",
   multiple: true,
@@ -31,20 +31,9 @@ const uploadProps = {
 };
 
 export default function Home(props) {
-  const [api, contextHolder] = notification.useNotification();
   const [open, setOpen] = useState(false);
 
-  const openNotification = () => {
-    api.open({
-      stack: 1,
-      message: "Information",
-      description: "Azure uploads all added files",
-      className: "custom-class",
-      style: {
-        width: 600,
-      },
-    });
-  };
+  
   const handleDrawer = () => {
     setOpen(!open);
   };
@@ -63,16 +52,10 @@ export default function Home(props) {
           <Col span={16} md={8}>
             <Card
             style={{textAlign:"center"}}
-              // actions={[
-              //   <div onMouseEnter={openNotification}>
-              //     <FaUpload size={50} key="setting" />
-              //     {contextHolder}
-              //   </div>,
-              // ]}
               title="Azure File Integration"
               type="inner"
             >
-              <Dragger {...uploadProps}>
+              <Dragger a {...uploadProps}>
                 <p className="ant-upload-drag-icon">
                   <InboxOutlined />
                 </p>
